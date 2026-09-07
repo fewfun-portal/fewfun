@@ -1,0 +1,6 @@
+{
+  "name": "Few Fun",
+  "description": "Few Fun - Play free online games, quizzes, and use quick tools directly in your browser. Mobile friendly and perfectly smooth.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

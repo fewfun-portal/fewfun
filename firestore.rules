@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitive Helpers
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    
+    // Feedback Validation
+    function isValidFeedback(data) {
+      return data.keys().hasAll(['name', 'email', 'message', 'createdAt']) && 
+             data.keys().size() == 4 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 150 &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 1000 &&
+             data.createdAt is number;
+    }
+
+    match /feedback/{feedbackId} {
+      // Anyone can submit feedback. No reads allowed by users.
+      allow create: if isValidId(feedbackId) && isValidFeedback(incoming());
+    }
+
+    // HighScore Validation
+    function isValidHighScore(data) {
+      return data.keys().hasAll(['gameId', 'playerName', 'score', 'createdAt']) &&
+             data.keys().size() == 4 &&
+             data.gameId is string && data.gameId.size() > 0 && data.gameId.size() <= 50 &&
+             data.playerName is string && data.playerName.size() > 0 && data.playerName.size() <= 50 &&
+             data.score is number &&
+             data.createdAt is number;
+    }
+
+    match /highscores/{scoreId} {
+      // Anyone can read high scores
+      allow read: if true;
+      // Anyone can submit a high score
+      allow create: if isValidId(scoreId) && isValidHighScore(incoming());
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback and contact messages.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "number", "description": "Timestamp" }
+      },
+      "required": ["name", "email", "message", "createdAt"]
+    },
+    "HighScore": {
+      "title": "HighScore",
+      "description": "User high scores for games.",
+      "type": "object",
+      "properties": {
+        "gameId": { "type": "string", "maxLength": 50 },
+        "playerName": { "type": "string", "maxLength": 50 },
+        "score": { "type": "number" },
+        "createdAt": { "type": "number", "description": "Timestamp" }
+      },
+      "required": ["gameId", "playerName", "score", "createdAt"]
+    }
+  },
+  "firestore": {
+    "feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "Stores user feedback"
+    },
+    "highscores/{scoreId}": {
+      "schema": "HighScore",
+      "description": "Stores game high scores"
+    }
+  }
+}
