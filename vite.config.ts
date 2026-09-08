@@ -1,20 +1,8 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs.plugin-react';
-import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default defineConfig(() => {
-  return {
-    base: '/fewfun/',
-    plugins: [react(), tailwindcss()],
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './'),
-      },
-    },
-    server: {
-      hmr: process.env.DISABLE_HMR === 'true' ? false : undefined,
-      watch: process.env.DISABLE_HMR === 'true' ? { usePolling: false } : undefined,
-    },
-  };
-});
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  base: '/fewfun/',
+})
